@@ -1,4 +1,5 @@
-import time
+import http.server
+import socketserver
 
 
 def update_graph(visited_steps):
@@ -21,11 +22,34 @@ def update_graph(visited_steps):
         f.write(graph_with_style)
 
 
-if __name__ == "__main__":
-    visited_steps = []
-    steps = [1, 2, 3, 4]
+visited_steps = []
 
-    for step in steps:
-        visited_steps.append(step)
-        update_graph(visited_steps)
-        time.sleep(5)
+class StepRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        # Use the following curl command to update step 1 to visited:
+        # curl -X GET "http://localhost:8000/update-step=1"
+        global visited_steps
+        if self.path.startswith("/update-step"):
+            try:
+                step = int(self.path.split("=")[1])
+                if step not in visited_steps:
+                    visited_steps.append(step)
+                update_graph(visited_steps)
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"Graph updated!")
+            except (ValueError, IndexError):
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Invalid step ID!")
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b"Invalid endpoint!")
+
+if __name__ == "__main__":
+    PORT = 8000
+    with socketserver.TCPServer(("", PORT), StepRequestHandler) as httpd:
+        print(f"Serving HTTP on port {PORT}...")
+        httpd.serve_forever()
+
