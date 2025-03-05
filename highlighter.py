@@ -47,7 +47,24 @@ class StepRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"Invalid endpoint!")
 
+def initialize_base_graph():
+    base_graph = """
+    graph TD;
+        e1[Start] --> e2[Process 1];
+        e2 --> e3[Process 2];
+        e3 --> e4[End];
+    """
+
+    style_definitions = """
+    classDef active fill:#ff0000,stroke:#000,color:#fff;
+    """
+
+    with open("graph.mmd", "w") as f:
+        f.write(base_graph + "\n" + style_definitions)
+
+
 if __name__ == "__main__":
+    initialize_base_graph()
     PORT = 8000
     with socketserver.TCPServer(("", PORT), StepRequestHandler) as httpd:
         print(f"Serving HTTP on port {PORT}...")
