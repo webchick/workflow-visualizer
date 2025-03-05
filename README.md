@@ -2,7 +2,7 @@
 Show stackholders what parts of the business flow being executed
 
 # Create the workflow graph
-edit the base graph file `base_graph.mmd`
+edit the base graph file `base_graph.mmd` to represent your workflow
 
 
 ### Run the highlighter server
