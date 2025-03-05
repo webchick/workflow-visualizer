@@ -48,12 +48,8 @@ class StepRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(b"Invalid endpoint!")
 
 def initialize_base_graph():
-    base_graph = """
-    graph TD;
-        e1[Start] --> e2[Process 1];
-        e2 --> e3[Process 2];
-        e3 --> e4[End];
-    """
+    with open("base_graph.mmd", "r") as graph_file:
+        base_graph = graph_file.read()
 
     style_definitions = """
     classDef active fill:#ff0000,stroke:#000,color:#fff;

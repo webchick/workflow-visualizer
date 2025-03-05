@@ -2,11 +2,9 @@
     graph TD;
         e1[Start] --> e2[Process 1];
         e2 --> e3[Process 2];
-        e3 --> e4[End];
+        e3 --> e4[Process 3];
+        e4 --> e5[End];
     
-class e3 active;
-class e4 active;
-class e1 active;
 
     classDef active fill:#ff0000,stroke:#000,color:#fff;
     

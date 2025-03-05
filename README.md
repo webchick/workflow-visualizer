@@ -1,6 +1,10 @@
 # Workflow execution visualization
 Show stackholders what parts of the business flow being executed
 
+# Create the workflow graph
+edit the base graph file `base_graph.mmd`
+
+
 ### Run the highlighter server
 
 ```bash
